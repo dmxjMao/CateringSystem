@@ -36,5 +36,7 @@ public:
 	CImageList		m_ImageList;
 	CStatusBar		m_StatusBar;
 	CToolBar		m_ToolBar;
-	
+	_RecordsetPtr m_pRs;
+
+	afx_msg void OnMenuLogin();
 };

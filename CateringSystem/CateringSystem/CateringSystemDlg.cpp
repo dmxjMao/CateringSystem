@@ -7,6 +7,8 @@
 #include "CateringSystemDlg.h"
 #include "afxdialogex.h"
 
+#include "logindlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -30,6 +32,8 @@ public:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+//	virtual BOOL OnInitDialog();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -64,6 +68,7 @@ BEGIN_MESSAGE_MAP(CCateringSystemDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_COMMAND(ID_MENU_login, &CCateringSystemDlg::OnMenuLogin)
 END_MESSAGE_MAP()
 
 
@@ -216,3 +221,85 @@ HCURSOR CCateringSystemDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CCateringSystemDlg::OnMenuLogin()
+{
+	// TODO: Add your command handler code here
+	CLoginDlg Logindlg;
+	if (Logindlg.DoModal() == IDOK)//创建对话框
+	{
+		CString Sql = _T("select * from LoginInfo where Uname='") + theApp.name + _T("'");
+		m_pRs = theApp.m_pCon->Execute((_bstr_t)Sql, NULL, adCmdText);//执行查询
+		CString Str = (_bstr_t)m_pRs->GetCollect("power");//用户权限
+		int radio = _ttoi(Str);//转换为整型
+		if (radio == 0)//经理
+		{
+			CMenu* pMenu = GetMenu();//获取菜单指针
+			pMenu->GetSubMenu(1)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->GetSubMenu(1)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->GetSubMenu(1)->EnableMenuItem(3, MF_BYPOSITION | MF_ENABLED);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_kaitai, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_pay, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_rishouru, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_reg, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_add, true);
+		}
+		if (radio == 1)//主管
+		{
+			CMenu* pMenu = GetMenu();//获取菜单指针
+			pMenu->GetSubMenu(1)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->GetSubMenu(1)->EnableMenuItem(2, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(1)->GetSubMenu(1)->EnableMenuItem(3, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(0, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_kaitai, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_pay, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_rishouru, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_reg, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_add, true);
+		}
+		if (radio == 2)//值班员
+		{
+			CMenu* pMenu = GetMenu();//获取菜单指针
+			pMenu->GetSubMenu(1)->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+			pMenu->GetSubMenu(1)->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(0, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(2)->EnableMenuItem(2, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(0, MF_BYPOSITION | MF_GRAYED);
+			pMenu->GetSubMenu(3)->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_kaitai, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_pay, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_rishouru, true);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_reg, false);
+			m_ToolBar.GetToolBarCtrl().EnableButton(IDB_add, true);
+		}
+		m_StatusBar.SetPaneText(1, _T("当前用户:") + theApp.name);//设置状态栏窗格
+		SetWindowText(_T("餐饮管理系统    当前登录用户:") + theApp.name);//设置对话框标题
+
+	}
+
+}
+
+
+//BOOL CAboutDlg::OnInitDialog()
+//{
+//	CDialogEx::OnInitDialog();
+//
+//	// TODO:  Add extra initialization here
+//	
+//
+//	return TRUE;  // return TRUE unless you set the focus to a control
+//				  // EXCEPTION: OCX Property Pages should return FALSE
+//}

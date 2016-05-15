@@ -20,6 +20,10 @@ class CCateringSystemApp : public CWinApp
 public:
 	CCateringSystemApp();
 
+	CString pwd;//记录登录用户密码
+	CString name;//记录登录用户名
+	_ConnectionPtr m_pCon;//连接数据库
+
 // Overrides
 public:
 	virtual BOOL InitInstance();

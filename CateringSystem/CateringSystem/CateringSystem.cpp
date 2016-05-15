@@ -36,6 +36,31 @@ CCateringSystemApp theApp;
 
 BOOL CCateringSystemApp::InitInstance()
 {
+	if (!AfxOleInit())
+	{
+		return FALSE;
+	}
+
+	HRESULT hr;
+	try
+	{
+		hr = m_pCon.CreateInstance("ADODB.Connection");
+		if (SUCCEEDED(hr))
+		{
+			m_pCon->ConnectionTimeout = 5;
+			hr = m_pCon->Open("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=canyin.accdb",
+				"", "", adModeUnknown);
+
+		}
+	}
+	catch (_com_error e)
+	{
+		CString temp;
+		temp.Format(_T("连接数据库错误信息:%s"), e.ErrorMessage());
+		::MessageBox(NULL, temp, _T("提示信息"), NULL);
+		return FALSE;
+	}
+
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.

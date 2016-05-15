@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="CateringSystem.h" />
     <ClInclude Include="CateringSystemDlg.h" />
+    <ClInclude Include="LoginDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -190,6 +191,7 @@
   <ItemGroup>
     <ClCompile Include="CateringSystem.cpp" />
     <ClCompile Include="CateringSystemDlg.cpp" />
+    <ClCompile Include="LoginDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -215,7 +217,9 @@
     <Image Include="res\开单.ICO" />
     <Image Include="res\收入.ico" />
     <Image Include="res\添加.ico" />
+    <Image Include="res\登录.bmp" />
     <Image Include="res\系统登录.ico" />
+    <Image Include="res\背景.bmp" />
     <Image Include="res\退出.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

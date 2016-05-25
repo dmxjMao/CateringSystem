@@ -9,6 +9,7 @@
 
 #include "ProblemDesciption.h"
 #include "KongPingDlg.h"
+#include "FunctionAlgorithm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -73,6 +74,10 @@ BOOL CAlgorithmDlg::OnInitDialog()
 	// init the global object array
 	//g_DlgPtrArray = new CDialogEx;
 	g_DlgPtrArray[Kong_Ping] = new CKongPingDlg;
+
+	// function test
+	string result;
+	MultiBigNumber("999", "999", result);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
